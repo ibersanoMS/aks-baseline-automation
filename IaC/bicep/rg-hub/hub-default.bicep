@@ -479,11 +479,6 @@ module hubFw '../CARML/Microsoft.Network/azureFirewalls/deploy.bicep' = {
     threatIntelMode: 'Deny'
     azureFirewallSubnetPublicIpId:hubFwPips[0].outputs.resourceId
     additionalPublicIpConfigurations: [
-      // {
-      //   name: hubFwPipNames[0]
-      //   publicIPAddressResourceId: hubFwPips[0].outputs.resourceId
-      //   subnetResourceId: '${subscription().id}/resourceGroups/${resourceGroupName}/providers/Microsoft.Network/virtualNetworks/${hubVNetName}/subnets/AzureFirewallSubnet'
-      // }
       {
         name: hubFwPipNames[1]
         publicIPAddressResourceId: hubFwPips[1].outputs.resourceId
