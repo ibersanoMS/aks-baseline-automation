@@ -81,7 +81,7 @@ var vnetNodePoolSubnetResourceId = '${targetVnetResourceId}/subnets/${clusterNod
 var agwName = 'apw-${clusterName}'
 var akvPrivateDnsZonesName = 'privatelink.vaultcore.azure.net'
 var clusterControlPlaneIdentityName = 'mi-${clusterName}-controlplane'
-var keyVaultName = 'kv-${clusterName}'
+var keyVaultName = 'kv-${clusterName}-1'
 var aksIngressDomainName = 'aks-ingress.${domainName}'
 var aksBackendDomainName = 'bu0001a0008-00.${aksIngressDomainName}'
 var isUsingAzureRBACasKubernetesRBAC = (subscription().tenantId == k8sControlPlaneAuthorizationTenantId)
