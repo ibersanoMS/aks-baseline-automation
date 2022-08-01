@@ -467,6 +467,7 @@ module hubFw '../CARML/Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: hubFwName
   scope: resourceGroup(resourceGroupName)
   params: {
+    vNetId: hubVNet.outputs.resourceId
     name: hubFwName
     location: location
     zones: [
@@ -477,12 +478,8 @@ module hubFw '../CARML/Microsoft.Network/azureFirewalls/deploy.bicep' = {
     azureSkuName: 'AZFW_VNet'
     azureSkuTier: 'Premium'
     threatIntelMode: 'Deny'
-    ipConfigurations: [
-      {
-        name: hubFwPipNames[0]
-        publicIPAddressResourceId: hubFwPips[0].outputs.resourceId
-        subnetResourceId: '${subscription().id}/resourceGroups/${resourceGroupName}/providers/Microsoft.Network/virtualNetworks/${hubVNetName}/subnets/AzureFirewallSubnet'
-      }
+    azureFirewallSubnetPublicIpId:hubFwPips[0].outputs.resourceId
+    additionalPublicIpConfigurations: [
       {
         name: hubFwPipNames[1]
         publicIPAddressResourceId: hubFwPips[1].outputs.resourceId

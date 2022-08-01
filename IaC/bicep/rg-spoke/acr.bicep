@@ -133,7 +133,6 @@ module acrAks '../CARML/Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     retentionPolicyDays: 15
     retentionPolicyStatus: 'enabled'
     publicNetworkAccess: 'Disabled'
-    encryptionStatus: 'disabled'
     dataEndpointEnabled: true
     networkRuleBypassOptions: 'AzureServices'
     zoneRedundancy: 'Disabled' // This Preview feature only supports three regions at this time, and eastus2's paired region (centralus), does not support this. So disabling for now.
@@ -144,17 +143,6 @@ module acrAks '../CARML/Microsoft.ContainerRegistry/registries/deploy.bicep' = {
       }
     ]
     diagnosticWorkspaceId: laAks.outputs.resourceId
-    // unfortunately deploying the endpoint here will fail for the first run
-    // privateEndpoints: [
-    //   {
-    //     name: 'nodepools'
-    //     subnetResourceId: spokeVirtualNetwork::snetClusterNodes.id
-    //     service: 'registry'
-    //     privateDnsZoneResourceIds: [
-    //       dnsPrivateZoneAcr.outputs.resourceId
-    //     ]
-    //   }
-    // ]
   }
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
@@ -168,8 +156,8 @@ module acrPrivateEndpoint '../CARML/Microsoft.Network/privateEndpoints/deploy.bi
   params: {
     name: 'nodepools'
     location: location
-    targetSubnetResourceId: spokeVirtualNetwork::snetClusterNodes.id
-    groupId: [
+    subnetResourceId: spokeVirtualNetwork::snetClusterNodes.id
+    groupIds: [
       'registry'
     ]
     serviceResourceId: acrAks.outputs.resourceId
