@@ -18,7 +18,7 @@ aks_clusters = {
     }
 
 
-    kubernetes_version = "1.23.5"
+    kubernetes_version = "1.23.8"
     vnet_key           = "vnet_aks_re1"
 
     # network plugin and network policy should be "azure" (recommended by Secure AKS baseline)
@@ -66,7 +66,7 @@ aks_clusters = {
 
     default_node_pool = {
       name                  = "sharedsvc"
-      vm_size               = "Standard_DS2_v2"
+      vm_size               = "Standard_DS3_v2"
       subnet_key            = "aks_nodepool_system"
       enabled_auto_scaling  = false
       enable_node_public_ip = false
