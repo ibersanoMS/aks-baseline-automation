@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.Environment }}
     steps:
-      - name: Get application code from repo
+      - name: Get baseline code from repo
         uses: actions/checkout@v2
       
       # Logs into your Azure subscription
@@ -115,6 +115,7 @@ jobs:
           username: ${{ inputs.ACRName }}
           password: ${{ steps.acr-pwd.outputs.password }}
       
+      # Get application code from repo
       - name: Get application code from repo
         uses: actions/checkout@main
         with:
@@ -138,7 +139,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    # Checks out the git repository
+    # Checks out the baseline repository
     - uses: actions/checkout@v2
 
     # Logs into your Azure subscription
@@ -158,9 +159,9 @@ jobs:
           $content | ForEach-Object {$_ -replace $line,"        image: ${{ inputs.ACRName }}.azurecr.io/${{ inputs.AppName }}:${{ github.run_number }}"} | Set-Content workloads/azure-vote/front-deployment.yml
         azPSVersion: "latest"
     
-    - name: Commit changes 
+    - name: Commit changes in manifest to repo
       run: | 
-        git config user.name "GitHub Actions GitOps"
+        git config user.name "GitHub Actions Bot"
         git config user.email ""
         git add workloads/azure-vote/front-deployment.yml
         git commit -m "Update image version in K8s Deployment manifests file"
