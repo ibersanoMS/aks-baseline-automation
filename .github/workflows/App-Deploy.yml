@@ -156,8 +156,15 @@ jobs:
           $content = Get-Content workloads/azure-vote/front-deployment.yml
           $content | ForEach-Object {$_ -replace $line,"        image: ${{ inputs.ACRName }}.azurecr.io/${{ inputs.AppName }}:${{ github.run_number }}"} | Set-Content workloads/azure-vote/front-deployment.yml
         azPSVersion: "latest"
-
+    
+    - name: Commit changes 
+      run: | 
+        git config user.name "GitHub Actions GitOps"
+        git config user.email ""
+        git add workloads/azure-vote/front-deployment.yml
+        git commit -m "Update image version in K8s Deployment manifests file"
+        git push origin
     # Commits the changes to the git repository
-    - uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: Update image version in K8s Deployment manifests file
+    # - uses: stefanzweifel/git-auto-commit-action@v4
+    #   with:
+    #     commit_message: Update image version in K8s Deployment manifests file
