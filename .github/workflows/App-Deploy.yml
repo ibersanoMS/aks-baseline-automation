@@ -90,7 +90,7 @@ jobs:
         run: |
           ACR_PASSWORD=$(az acr credential show -g ${{ inputs.ResourceGroupName }} -n ${{ inputs.ACRName }} --query passwords[0].value -o tsv)
           echo "::set-output name=password::$ACR_PASSWORD"
-          echo "::add-mask::password" 
+          echo "::add-mask::$ACR_PASSWORD"
   
       # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
       - name: Get K8s context
