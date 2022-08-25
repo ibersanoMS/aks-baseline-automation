@@ -5,7 +5,7 @@
 on: 
   workflow_dispatch:
     inputs:
-      ResourceGroup:
+      ResourceGroupName:
         description: 'The Resource Group where your resources are deployed'
         required: false
         default: "gitops-example"
