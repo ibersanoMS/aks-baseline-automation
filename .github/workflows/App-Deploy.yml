@@ -4,7 +4,6 @@
 
 on: 
   workflow_dispatch:
-  pull_request:
     inputs:
       ResourceGroup:
         description: 'The Resource Group where your resources are deployed'
@@ -49,8 +48,8 @@ on:
       Environment:
         description: 'A GitHub Environment to pull action secrets from'
         required: false
-        default: "dev"
-        type: string  
+        default: dev
+        type: environment  
       Region:
         description: 'Location where the resources need to be deployed'
         required: false
