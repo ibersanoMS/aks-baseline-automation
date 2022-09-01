@@ -2,7 +2,7 @@
 # It is split into separate jobs for readability but could be squashed into a single job if that best suits your scenario
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       ResourceGroupName:
         description: 'The Resource Group where your resources are deployed'
