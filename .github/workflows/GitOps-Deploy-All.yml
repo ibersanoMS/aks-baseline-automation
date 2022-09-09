@@ -90,19 +90,26 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
       
-      - name: Get ACR Password
-        id: acr-pwd
+      - name: Connect to Azure Container Registry (ACR)
+        id: acrconnect
         run: |
-          ACR_PASSWORD=$(az acr credential show -g ${{ inputs.ResourceGroupName }} -n ${{ inputs.ACRName }} --query passwords[0].value -o tsv)
-          echo "::set-output name=password::$ACR_PASSWORD"
-          echo "::add-mask::$ACR_PASSWORD"
+          echo "Retrieving access token from ${{ inputs.ACRName}}"
+          TOKEN=$(az acr login -n ${{ inputs.ACRName}} --expose-token)
 
-      # Logs into the Azure Container Registry (ACR)
-      - uses: azure/docker-login@v1
-        with:
-          login-server: ${{ inputs.ACRName }}.azurecr.io
-          username: ${{ inputs.ACRName }}
-          password: ${{ steps.acr-pwd.outputs.password }}
+          if [ -z "$TOKEN" ]
+          then
+            echo "ACR Token was not retrieved successfully"
+            exit 1
+          fi
+
+          ACRTOKEN=$(echo $TOKEN | jq -r ".accessToken")
+          LOGINSERVER=$(echo $TOKEN | jq -r ".loginServer")
+
+          echo "ACR Login Server: $LOGINSERVER"
+          echo "::set-output name=loginServer::$LOGINSERVER"
+
+          echo "Passing token as stdin to docker login"
+          echo $ACRTOKEN | docker login $LOGINSERVER -u 00000000-0000-0000-0000-000000000000 --password-stdin
 
       # Builds and Pushes the container image to the Azure Container Registry (ACR)
       - name: Container build and push to a Azure Container Registry (ACR)
